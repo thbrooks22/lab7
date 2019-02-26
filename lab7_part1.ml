@@ -36,11 +36,11 @@ functions and values that a mathematics module might contain.
 module type MATH =
   sig
     (* the constant pi *)
-    val pi : float                        
+    val pi : float
     (* cosine of an angle *)
     val cos : float -> float
     (* sine of an angle *)
-    val sin : float -> float 
+    val sin : float -> float
     (* sum of two numbers *)
     val sum : float -> float -> float
     (* maximum value in a list; None if list is empty *)
@@ -51,18 +51,31 @@ module type MATH =
 Exercise 1A: Complete the implementation of a module called Math that
 satisfies the signature above. (The value "nan" stands for "not a
 number" and is an actual value of the float type, as dictated by the
-IEEE Floating Point standard described at 
+IEEE Floating Point standard described at
 <https://en.wikipedia.org/wiki/IEEE_754>. We're using it here as a
 temporary value pending your putting in appropriate ones.)
 ......................................................................*)
 
+(* Most of the pertinent math functions are already available in the
+Pervasives module. We can just use them here. And since functions are
+first-class values in OCaml, you don't need to replicate the argument
+structure in the definitions. For example, there's no need for
+
+    let cos x = cos x     .
+
+The only function not already available is max; we generated a simple
+implementation using a partially applied fold on non-empty lists. *)
+
 module Math : MATH =
   struct
-    let pi = nan
-    let cos _ = nan
-    let sin _ = nan
-    let sum _ _ = nan
-    let max _ = None
+    let pi = 3.14159
+    let cos = cos
+    let sin = sin
+    let sum = (+.)
+    let max lst =
+      match lst with
+      | [] -> None
+      | hd :: tl -> Some (List.fold_left max hd tl)
   end ;;
 
 (*......................................................................
@@ -72,7 +85,7 @@ type float option. Name the resulting value "result". (Do not use a
 local open for this exercise.)
 ......................................................................*)
 
-let result = Some nan ;;
+let result = Math.max [Math.cos Math.pi; Math.sin Math.pi] ;;
 
 (*......................................................................
 Exercise 1C: Reimplement the computation from 1B above, now as
@@ -80,4 +93,8 @@ Exercise 1C: Reimplement the computation from 1B above, now as
 in a more succinct manner.
 ......................................................................*)
 
-let result_local_open = Some nan ;;
+let result_local_open =
+  let open Math in
+  max [cos pi; sin pi] ;;
+
+(* Isn't the version with the local open more readable?! *)

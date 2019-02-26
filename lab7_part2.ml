@@ -17,6 +17,11 @@ files to complete all exercises:
 
  *)
 
+(* This line is only necessary because our solution files are named
+   differently; they have a _soln suffix attached. It wouldn't be used
+   in your code. To see our solution, you can look at the files
+   color_soln.ml and color_soln.mli. *)
+module Color = Color_soln ;;
 
 (*======================================================================
 Part 2: Files as modules
@@ -56,7 +61,7 @@ below.
     you. However, you can do so manually yourself with the mod_use
     directive, like this:
 
-        # #mod_use "color.ml" ;;
+        #mod_use "color.ml" ;;
 
     allowing you to then refer to elements of the module as, for
     instance,
@@ -71,7 +76,8 @@ Exercise 2A: Extract the red channel of the color named Red, naming
 the result "red_channel".
 ......................................................................*)
 
-let red_channel : int = 0 ;;
+let red_channel : int =
+  Color.red (Color.color_named Color.Red) ;;
 
 (* We hope you'll find the module system quite useful, once you get
 the hang of the conventions.
@@ -94,9 +100,24 @@ Once you have color.mli implemented, you should still be able to
 compile color.ml and run color.byte.
 ......................................................................*)
 
+(* The Color module type captures the interface we want our color
+modules to obey. Your color.mli file should have the following types
+and values declared. If you have trouble getting this to work, you can
+find our solution in color_soln.mli.
+
+    type color ;;
+    type color_name =
+      | Red | Green | Blue
+      | Orange | Yellow | Indigo | Violet ;;
+    val to_color : int -> int -> int -> color ;;
+    val red : color -> int ;;
+    val green: color -> int ;;
+    val blue: color -> int ;;
+    val color_named: color_name -> color ;;
+   *)
 
 (*......................................................................
-Exercise 2C: 
+Exercise 2C:
 
 In the file "color.ml", modify the implementation of a color module as
 you see fit. Make the design choices that you think would be best for
@@ -119,6 +140,7 @@ the color_name type to have the following values:
 
 ......................................................................*)
 
+(* See the solution in color_soln.ml *)
 
 (* Here's the payoff: A user who uses the color module, by virtue of
 having to stay within the color.mli interface, will not notice **any
