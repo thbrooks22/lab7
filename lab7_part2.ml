@@ -21,7 +21,7 @@ files to complete all exercises:
    differently; they have a _soln suffix attached. It wouldn't be used
    in your code. To see our solution, you can look at the files
    color_soln.ml and color_soln.mli. *)
-module Color = Color_soln ;;
+module Color = Color ;;
 
 (*======================================================================
 Part 2: Files as modules
